@@ -1,0 +1,8 @@
+name = "Synth"
+uuid = "07876016-3eb2-4af6-bcce-2d816ccbc4a7"
+authors = ["Justin Broce <jbroce@ufl.edu>"]
+version = "0.1.0"
+
+[deps]
+MIDI = "f57c4921-e30c-5f49-b073-3f2f2ada663e"
+WAV = "8149f6b0-98f6-5db9-b78f-408fbbb8ef88"
