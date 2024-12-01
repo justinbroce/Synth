@@ -83,7 +83,7 @@ function synthesize_drum(params::Dict{String, Any}; seconds=0.5, fs=44100.0)
     if haskey(params, "frequencies")
         freqs = params["frequencies"]
         weights = get(params, "weights", ones(length(freqs)) ./ length(freqs)) # Default to equal weights
-        sin_cache = Dict{Float64, Float64}() # Or use an array if frequencies are integers
+        
 
 # Inside the oscillator loop:
         twoPi = 2π .* t
