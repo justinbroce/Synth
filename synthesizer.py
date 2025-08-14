@@ -367,7 +367,8 @@ if __name__ == '__main__':
 
     start_time = time.time()
     midi_file_path_2 = 'midi/police.mid'
-    output_wav_path_2 = 'police_py.wav'
+    output_wav_path_2_dry = 'police_dry_py.wav'
+    output_wav_path_2_fx = 'police_fx_py.wav'
 
     if not os.path.exists(midi_file_path_2):
         print(f"Error: MIDI file not found at {midi_file_path_2}")
@@ -376,10 +377,131 @@ if __name__ == '__main__':
         audio_data_2 = synthesize_midi(midi_file_path_2, instrument_mapping=brooklyn99_mapping)
 
         if audio_data_2.size > 0:
-            save_wav(audio_data_2, output_wav_path_2, fs=44100.0)
+            # Save the dry version first
+            save_wav(audio_data_2, output_wav_path_2_dry, fs=44100.0)
+            print(f"Dry synthesis complete for {midi_file_path_2}. Output saved to {output_wav_path_2_dry}")
+
+            # Create "The Police" effects chain
+            from pedalboard import Pedalboard, Chorus, Delay
+            the_police_board = Pedalboard([
+                Chorus(rate_hz=1.2, depth=0.25, mix=0.5),
+                Delay(delay_seconds=0.4, feedback=0.3, mix=0.25)
+            ])
+
+            print("Applying 'The Police' effects...")
+            processed_audio_2 = the_police_board(audio_data_2.astype(np.float32), sample_rate=44100.0)
+
+            save_wav(processed_audio_2, output_wav_path_2_fx, fs=44100.0)
             end_time = time.time()
-            print(f"Synthesis complete for {midi_file_path_2}.")
-            print(f"Output saved to {output_wav_path_2}")
-            print(f"Synthesis time: {end_time - start_time:.2f} seconds")
+            print(f"Effects version saved to {output_wav_path_2_fx}")
+            print(f"Total time for Example 2: {end_time - start_time:.2f} seconds")
         else:
             print(f"Synthesis failed for {midi_file_path_2}.")
+
+    print("\n" + "="*50 + "\n")
+
+    # --- Example 3: Synthesize the "salsa" song with its specific mapping ---
+    print("--- Running Example 3: Synthesizing the salsa track ---")
+
+    salsa_mapping = {
+        1: Instrument("Drumset", synthesize_drum_pad),
+        2: Instrument("Drumset", synthesize_drum_pad),
+        3: Instrument("Trumpet", synthesize_melodic_instrument),
+        4: Instrument("Mallet", synthesize_melodic_instrument),
+        5: Instrument("Bass", synthesize_melodic_instrument),
+        6: Instrument("Trombone", synthesize_melodic_instrument),
+        7: Instrument("Trombone", synthesize_melodic_instrument),
+    }
+
+    start_time = time.time()
+    midi_file_path_3 = 'midi/Lloraras.mid'
+    output_wav_path_3 = 'lloraras_py.wav'
+
+    if not os.path.exists(midi_file_path_3):
+        print(f"Error: MIDI file not found at {midi_file_path_3}")
+        print("Skipping Example 3.")
+    else:
+        audio_data_3 = synthesize_midi(midi_file_path_3, instrument_mapping=salsa_mapping)
+
+        if audio_data_3.size > 0:
+            from pedalboard import Pedalboard, Compressor, Reverb
+
+            # Create a subtle effects chain for the salsa track
+            salsa_board = Pedalboard([
+                Compressor(threshold_db=-10, ratio=2.5),
+                Reverb(room_size=0.6, wet_level=0.2, dry_level=0.8)
+            ])
+
+            print("Applying salsa effects...")
+            processed_audio_3 = salsa_board(audio_data_3.astype(np.float32), sample_rate=44100.0)
+
+            save_wav(processed_audio_3, output_wav_path_3, fs=44100.0)
+            end_time = time.time()
+            print(f"Synthesis complete for {midi_file_path_3}.")
+            print(f"Output saved to {output_wav_path_3}")
+            print(f"Total time: {end_time - start_time:.2f} seconds")
+        else:
+            print(f"Synthesis failed for {midi_file_path_3}.")
+
+    print("\n" + "="*50 + "\n")
+
+    # --- Example 4: Apply audio effects using pedalboard ---
+    print("--- Running Example 4: Applying reverb effect ---")
+
+    # Check if the audio data from example 1 exists
+    if 'audio_data' in locals() and audio_data.size > 0:
+        from pedalboard import Pedalboard, Reverb
+
+        # Create a pedalboard with a reverb effect
+        board = Pedalboard([
+            Reverb(room_size=0.75, damping=0.5, wet_level=0.33, dry_level=0.4)
+        ])
+
+        print("Applying reverb...")
+        # The process call requires the sample rate
+        processed_audio = board(audio_data.astype(np.float32), sample_rate=44100.0)
+
+        output_wav_path_4 = 'roygbiv_reverb_py.wav'
+        save_wav(processed_audio, output_wav_path_4, fs=44100.0)
+        print(f"Effect processing complete. Output saved to {output_wav_path_4}")
+    else:
+        print("Skipping Example 4 because the audio from Example 1 was not generated.")
+
+    print("\n" + "="*50 + "\n")
+
+    # --- Example 5: Create a psychedelic version of Plantasia ---
+    print("--- Running Example 5: Creating psychedelic Plantasia ---")
+
+    start_time = time.time()
+    midi_file_path_5 = 'midi/Plantasia.mid'
+    output_wav_path_5 = 'plantasia_psychedelic_py.wav'
+
+    if not os.path.exists(midi_file_path_5):
+        print(f"Error: MIDI file not found at {midi_file_path_5}")
+        print("Skipping Example 5.")
+    else:
+        # 1. Synthesize the MIDI file first
+        plantasia_audio = synthesize_midi(midi_file_path_5)
+
+        if plantasia_audio.size > 0:
+            from pedalboard import Pedalboard, Phaser, Delay, Reverb
+
+            # 2. Create the "psychedelic" effects board
+            psychedelic_board = Pedalboard([
+                Phaser(rate_hz=1.0, depth=0.5),
+                Delay(delay_seconds=0.5, feedback=0.4, mix=0.5),
+                Reverb(room_size=0.8, wet_level=0.5, dry_level=0.6)
+            ])
+
+            print("Applying psychedelic effects...")
+            # 3. Process the audio through the board, passing the sample rate here
+            processed_audio_5 = psychedelic_board(plantasia_audio.astype(np.float32), sample_rate=44100.0)
+
+            # 4. Save the final output
+            save_wav(processed_audio_5, output_wav_path_5, fs=44100.0)
+            end_time = time.time()
+            print(f"Psychedelic synthesis complete for {midi_file_path_5}.")
+            print(f"Output saved to {output_wav_path_5}")
+            print(f"Total time: {end_time - start_time:.2f} seconds")
+        else:
+            print(f"Synthesis failed for {midi_file_path_5}.")
