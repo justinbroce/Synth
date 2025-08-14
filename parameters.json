@@ -745,6 +745,50 @@
             "release": 0.07
           }
         },
+        "88": {
+          "name": "Percussion 88",
+          "parameters": {
+            "noise_level": 0.8,
+            "noise_cutoff": 4000.0,
+            "attack": 0.001,
+            "decay": 0.1,
+            "sustain": 0.0,
+            "release": 0.1
+          }
+        },
+        "89": {
+          "name": "Percussion 89",
+          "parameters": {
+            "noise_level": 0.8,
+            "noise_cutoff": 5000.0,
+            "attack": 0.001,
+            "decay": 0.1,
+            "sustain": 0.0,
+            "release": 0.1
+          }
+        },
+        "90": {
+          "name": "Percussion 90",
+          "parameters": {
+            "noise_level": 0.8,
+            "noise_cutoff": 6000.0,
+            "attack": 0.001,
+            "decay": 0.1,
+            "sustain": 0.0,
+            "release": 0.1
+          }
+        },
+        "94": {
+          "name": "Percussion 94",
+          "parameters": {
+            "noise_level": 0.9,
+            "noise_cutoff": 7000.0,
+            "attack": 0.001,
+            "decay": 0.05,
+            "sustain": 0.0,
+            "release": 0.05
+          }
+        },
 
 
         "Piano": {"parameters":{
